@@ -19,7 +19,7 @@ var packages = {
 
 var map = L.map('map').setView([49.7417517, 15.3350758], 8);
 
-L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
