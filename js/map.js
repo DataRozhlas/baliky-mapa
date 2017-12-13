@@ -17,7 +17,8 @@ var packages = {
   "40070005249": { "route":"Ostrava – Klatovy ", "provider":"PPL", color:'#74c476'}
 };
 
-var map = L.map('map').setView([49.7417517, 15.3350758], 8);
+var map = L.map('map').setView([49.7417517, 15.3350758], 7);
+map.scrollWheelZoom.disable();
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
