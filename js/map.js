@@ -1,3 +1,22 @@
+var packages = {
+  "DR0305764330X": { "route":"Jeseník – Čechtice ", "provider":"Česká pošta"},
+  "DR0269355998X": { "route":"Čechtice – Jeseník", "provider":"Česká pošta"},
+  "40970017769": { "route":"Jeseník – Čechtice", "provider":"PPL"},
+  "41270011889": { "route":"Čechtice – Jeseník", "provider":"PPL"},
+  "DR0239495603X": { "route":"Praha – Brno", "provider":"Česká pošta"},
+  "DR0275736681X": { "route":"Brno – Praha ", "provider":"Česká pošta"},
+  "40170028759": { "route":"Praha – Brno", "provider":"PPL"},
+  "40670023798": { "route":"Brno – Praha ", "provider":"PPL"},
+  "DR0282263514X": { "route":"Teplice – Tábor ", "provider":"Česká pošta"},
+  "DR0263646516X": { "route":"Tábor – Teplice ", "provider":"Česká pošta"},
+  "40211350106": { "route":"Tábor – Teplice ", "provider":"PPL"},
+  "40470008020": { "route":"Teplice – Tábor", "provider":"PPL"},
+  "DR0298690682X": { "route":"Klatovy – Ostrava ", "provider":"Česká pošta"},
+  "DR0300002852X": { "route":"Ostrava – Klatovy ", "provider":"Česká pošta"},
+  "40350006800": { "route":"Klatovy – Ostrava ", "provider":"PPL"},
+  "40070005249": { "route":"Ostrava – Klatovy ", "provider":"PPL"}
+};
+
 var map = L.map('map').setView([49.7417517, 15.3350758], 8);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -30,6 +49,15 @@ function getColor(duration) {
     {return '#d7191c'}
 };
 
+function makeTooltip(args) {
+    if (typeof args == 'undefined') {
+        document.getElementById('tooltip').innerHTML = 'Vyberte trasu balíku.';
+    } else {
+        document.getElementById('tooltip').innerHTML = 'Balík ' + packages[args.pkg_id].route + ' (' + packages[args.pkg_id].provider + ')<br>Dní v přepravě: ' 
+        + args.duration;
+    };
+};
+
 Object.keys(tracking).forEach(function(pkg_id) {
     var linePnts = [];
     var duration = howLong(tracking[pkg_id][Object.keys(tracking[pkg_id]).length - 1]['date'], tracking[pkg_id][0]['date']);
@@ -56,17 +84,33 @@ Object.keys(tracking).forEach(function(pkg_id) {
 
             spot.addTo(map);
             spot.on('mouseover', function(e) {
-              console.log(e);
+                makeTooltip(e.target.options);
             });
             spot.on('mouseout', function(e) {
-              console.log('out');
+                makeTooltip();
             });
             spot.on('click', function(e) {
-              console.log(e);
+                makeTooltip(e.target.options);
             });
         };
         
+        var line = L.polyline(linePnts, {
+            color: color,
+            weight: 3,
+            opacity: 0.25,
+            pkg_id: pkg_id,
+            duration: duration
+        });
+        line.addTo(map);
 
-        console.log(tracking[pkg_id][day])
+        line.on('mouseover', function(e) {
+            makeTooltip(e.target.options);
+        });
+        line.on('mouseout', function(e) {
+            makeTooltip();
+        });
+        line.on('click', function(e) {
+            makeTooltip(e.target.options);
+        });
     }
 })
