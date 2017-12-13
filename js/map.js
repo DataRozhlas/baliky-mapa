@@ -1,20 +1,20 @@
 var packages = {
-  "DR0305764330X": { "route":"Jeseník – Čechtice ", "provider":"Česká pošta"},
-  "DR0269355998X": { "route":"Čechtice – Jeseník", "provider":"Česká pošta"},
-  "40970017769": { "route":"Jeseník – Čechtice", "provider":"PPL"},
-  "41270011889": { "route":"Čechtice – Jeseník", "provider":"PPL"},
-  "DR0239495603X": { "route":"Praha – Brno", "provider":"Česká pošta"},
-  "DR0275736681X": { "route":"Brno – Praha ", "provider":"Česká pošta"},
-  "40170028759": { "route":"Praha – Brno", "provider":"PPL"},
-  "40670023798": { "route":"Brno – Praha ", "provider":"PPL"},
-  "DR0282263514X": { "route":"Teplice – Tábor ", "provider":"Česká pošta"},
-  "DR0263646516X": { "route":"Tábor – Teplice ", "provider":"Česká pošta"},
-  "40211350106": { "route":"Tábor – Teplice ", "provider":"PPL"},
-  "40470008020": { "route":"Teplice – Tábor", "provider":"PPL"},
-  "DR0298690682X": { "route":"Klatovy – Ostrava ", "provider":"Česká pošta"},
-  "DR0300002852X": { "route":"Ostrava – Klatovy ", "provider":"Česká pošta"},
-  "40350006800": { "route":"Klatovy – Ostrava ", "provider":"PPL"},
-  "40070005249": { "route":"Ostrava – Klatovy ", "provider":"PPL"}
+  "DR0305764330X": { "route":"Jeseník – Čechtice ", "provider":"Česká pošta", color: '#08519c'},
+  "DR0269355998X": { "route":"Čechtice – Jeseník", "provider":"Česká pošta", color: '#6baed6'},
+  "40970017769": { "route":"Jeseník – Čechtice", "provider":"PPL", color: '#08519c'},
+  "41270011889": { "route":"Čechtice – Jeseník", "provider":"PPL", color: '#6baed6'},
+  "DR0239495603X": { "route":"Praha – Brno", "provider":"Česká pošta", color: '#fb6a4a'},
+  "DR0275736681X": { "route":"Brno – Praha ", "provider":"Česká pošta", color: '#a50f15'},
+  "40170028759": { "route":"Praha – Brno", "provider":"PPL", color: '#fb6a4a'},
+  "40670023798": { "route":"Brno – Praha ", "provider":"PPL", color: '#a50f15'},
+  "DR0282263514X": { "route":"Teplice – Tábor ", "provider":"Česká pošta", color: '#54278f'},
+  "DR0263646516X": { "route":"Tábor – Teplice ", "provider":"Česká pošta", color: '#9e9ac8'},
+  "40211350106": { "route":"Tábor – Teplice ", "provider":"PPL", color:'#9e9ac8'},
+  "40470008020": { "route":"Teplice – Tábor", "provider":"PPL", color: '#54278f'},
+  "DR0298690682X": { "route":"Klatovy – Ostrava ", "provider":"Česká pošta", color:'#006d2c'},
+  "DR0300002852X": { "route":"Ostrava – Klatovy ", "provider":"Česká pošta", color:'#74c476'},
+  "40350006800": { "route":"Klatovy – Ostrava ", "provider":"PPL", color: '#006d2c'},
+  "40070005249": { "route":"Ostrava – Klatovy ", "provider":"PPL", color:'#74c476'}
 };
 
 var map = L.map('map').setView([49.7417517, 15.3350758], 8);
@@ -61,7 +61,7 @@ function makeTooltip(args) {
 Object.keys(tracking).forEach(function(pkg_id) {
     var linePnts = [];
     var duration = howLong(tracking[pkg_id][Object.keys(tracking[pkg_id]).length - 1]['date'], tracking[pkg_id][0]['date']);
-    var color = getColor(duration)
+    var color = packages[pkg_id].color;
     for (var day in tracking[pkg_id]) {
         var v = tracking[pkg_id][day];
         if (!(isNaN(v['x']))) {
@@ -79,7 +79,9 @@ Object.keys(tracking).forEach(function(pkg_id) {
                 status: v.status,
                 date: v.date,
                 tracking: v.tracking,
-                psc: v.psc
+                psc: v.psc,
+                pkg_id: pkg_id,
+                duration: duration
             });
 
             spot.addTo(map);
