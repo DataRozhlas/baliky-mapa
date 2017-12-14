@@ -61,7 +61,7 @@ function makeTooltip(args) {
 
 Object.keys(tracking).forEach(function(pkg_id) {
     var linePnts = [];
-    var duration = howLong(tracking[pkg_id][Object.keys(tracking[pkg_id]).length - 1]['date'], tracking[pkg_id][0]['date']);
+    var duration = Math.round(howLong(tracking[pkg_id][Object.keys(tracking[pkg_id]).length - 1]['date'], tracking[pkg_id][0]['date']));
     var color = packages[pkg_id].color;
     for (var day in tracking[pkg_id]) {
         var v = tracking[pkg_id][day];
